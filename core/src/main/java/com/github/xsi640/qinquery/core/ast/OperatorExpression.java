@@ -1,13 +1,16 @@
 package com.github.xsi640.qinquery.core.ast;
 
+import com.github.xsi640.qinquery.core.visitor.Visitor;
+
 /**
  * @author SuYang
  */
-public final class OperatorExpression implements Expression {
+public final class OperatorExpression extends SymbolExpression {
 
     private final Operator operator;
 
     public OperatorExpression(Operator operator) {
+        super(operator.name());
         this.operator = operator;
     }
 
@@ -16,12 +19,12 @@ public final class OperatorExpression implements Expression {
     }
 
     @Override
-    public <R, C> R accept(Visitor<R, C> visitor, C context) {
-        return visitor.visit(this, context);
+    public <C> void accept(Visitor<C> visitor, C context) {
+        visitor.onOperator(this, context);
     }
 
     @Override
     public int priority() {
-        return operator.priority;
+        return this.operator.priority;
     }
 }

@@ -1,5 +1,7 @@
 package com.github.xsi640.qinquery.core.ast;
 
+import com.github.xsi640.qinquery.core.visitor.Visitor;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -7,7 +9,7 @@ import java.util.Date;
 /**
  * @author SuYang
  */
-public final class ValueExpression implements Expression {
+public final class ValueExpression extends ParamExpression {
 
     private final Object value;
 
@@ -32,8 +34,8 @@ public final class ValueExpression implements Expression {
     }
 
     @Override
-    public <R, C> R accept(Visitor<R, C> visitor, C context) {
-        return visitor.visit(this, context);
+    public <C> void accept(Visitor<C> visitor, C context) {
+        visitor.onValue(this, context);
     }
 
     @Override

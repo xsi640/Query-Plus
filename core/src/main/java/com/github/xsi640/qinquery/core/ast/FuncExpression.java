@@ -1,43 +1,51 @@
 package com.github.xsi640.qinquery.core.ast;
 
+import com.github.xsi640.qinquery.core.visitor.Visitor;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author SuYang
  */
-public final class FuncExpression implements Expression {
-    private final Expression func;
-    private final List<Expression> parameters;
+public final class FuncExpression extends ParamExpression {
+    private final SymbolExpression func;
+    private final ParamExpression mark;
+    private final List<ParamExpression> parameters;
 
-    public FuncExpression(Expression func, List<Expression> parameters) {
-        if (func == null || parameters == null || parameters.isEmpty()) {
-            throw new IllegalArgumentException("not null");
-        }
-        if (!(func instanceof SymbolExpression ||
-                func instanceof OperatorExpression)) {
-            throw new IllegalArgumentException("not support func.");
-        }
-        for (Expression parameter : parameters) {
-            if (!(parameter instanceof FuncExpression ||
-                    parameter instanceof ValueExpression)) {
-                throw new IllegalArgumentException("not support parameter.");
-            }
+    public FuncExpression(SymbolExpression func, ParamExpression mark, ParamExpression... parameters) {
+        if (func == null || mark == null) {
+            throw new IllegalArgumentException("func and mark not null");
         }
         this.func = func;
+        this.mark = mark;
+        this.parameters = Arrays.asList(parameters);
+    }
+
+    public FuncExpression(SymbolExpression func, ParamExpression mark, List<ParamExpression> parameters) {
+        if (func == null || mark == null) {
+            throw new IllegalArgumentException("func and mark not null");
+        }
+        this.func = func;
+        this.mark = mark;
         this.parameters = parameters;
     }
 
-    public Expression getFunc() {
+    public SymbolExpression getFunc() {
         return func;
     }
 
-    public List<Expression> getParameters() {
+    public ParamExpression getMark() {
+        return mark;
+    }
+
+    public List<ParamExpression> getParameters() {
         return parameters;
     }
 
     @Override
-    public <R, C> R accept(Visitor<R, C> visitor, C context) {
-        return visitor.visit(this, context);
+    public <C> void accept(Visitor<C> visitor, C context) {
+        visitor.onFunc(this, context);
     }
 
     @Override

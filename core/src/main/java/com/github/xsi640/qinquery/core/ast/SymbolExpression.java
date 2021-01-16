@@ -1,9 +1,11 @@
 package com.github.xsi640.qinquery.core.ast;
 
+import com.github.xsi640.qinquery.core.visitor.Visitor;
+
 /**
  * @author SuYang
  */
-public final class SymbolExpression implements Expression {
+public class SymbolExpression extends AbstractExpression {
 
     private final String symbol;
 
@@ -14,13 +16,17 @@ public final class SymbolExpression implements Expression {
         this.symbol = symbol;
     }
 
+    public String getSymbol() {
+        return symbol;
+    }
+
     @Override
-    public <R, C> R accept(Visitor<R, C> visitor, C context) {
-        return null;
+    public <C> void accept(Visitor<C> visitor, C context) {
+        visitor.onSymbol(this, context);
     }
 
     @Override
     public int priority() {
-        return 0;
+        return 90;
     }
 }
