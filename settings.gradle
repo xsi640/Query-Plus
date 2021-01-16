@@ -1,0 +1,9 @@
+rootProject.name = 'qin-query'
+
+def defineSubProject(name, path) {
+    String prjName = "qin-query-$name"
+    include(prjName)
+    project(":$prjName").projectDir = file(path)
+}
+
+defineSubProject("core", "core")

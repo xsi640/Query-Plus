@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+allprojects {
+    apply plugin: "idea"
+    apply plugin: "java"
+
+    group "com.github.xsi640"
+    version "1.0.0"
+
+    java.sourceCompatibility = JavaVersion.VERSION_1_8
+    java.targetCompatibility = JavaVersion.VERSION_1_8
+
+    ext.prjName = "qin-query"
+
+    ext.vers = [
+    ]
+
+    def user = System.properties["repoUser"]
+    def pwd = System.properties["repoPassword"]
+
+    repositories {
+        mavenLocal()
+        maven {
+            credentials {
+                username = user
+                password = pwd
+            }
+            url "http://192.168.1.254:8081/repository/maven-group/"
+        }
+    }
+
+    dependencies {
+    }
+}
