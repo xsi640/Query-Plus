@@ -5,8 +5,8 @@ import java.io.Serializable;
 /**
  * @author SuYang
  */
-public interface Expression<T> extends Serializable {
+public interface Expression extends Serializable {
     <R, C> R accept(Visitor<R, C> visitor, C context);
 
-    Class<? extends T> type();
+    int priority();
 }
