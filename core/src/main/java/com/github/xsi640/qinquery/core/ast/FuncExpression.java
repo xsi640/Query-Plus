@@ -13,6 +13,16 @@ public final class FuncExpression implements Expression {
         if (func == null || parameters == null || parameters.isEmpty()) {
             throw new IllegalArgumentException("not null");
         }
+        if (!(func instanceof SymbolExpression ||
+                func instanceof OperatorExpression)) {
+            throw new IllegalArgumentException("not support func.");
+        }
+        for (Expression parameter : parameters) {
+            if (!(parameter instanceof FuncExpression ||
+                    parameter instanceof ValueExpression)) {
+                throw new IllegalArgumentException("not support parameter.");
+            }
+        }
         this.func = func;
         this.parameters = parameters;
     }
