@@ -1,6 +1,7 @@
-package com.github.xsi640.qinquery.core.visitor;
+package com.github.xsi640.queryplus.core.visitor;
 
 import com.github.xsi640.qinquery.core.ast.*;
+import com.github.xsi640.queryplus.core.ast.*;
 
 /**
  * @author SuYang

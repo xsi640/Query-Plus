@@ -1,6 +1,10 @@
-package com.github.xsi640.qinquery.core.visitor;
+package com.github.xsi640.queryplus.core.visitor;
 
 import com.github.xsi640.qinquery.core.ast.*;
+import com.github.xsi640.queryplus.core.ast.FuncExpression;
+import com.github.xsi640.queryplus.core.ast.OperatorExpression;
+import com.github.xsi640.queryplus.core.ast.ParamExpression;
+import com.github.xsi640.queryplus.core.ast.ValueExpression;
 
 /**
  * @author SuYang

@@ -1,6 +1,6 @@
-package com.github.xsi640.qinquery.core.ast;
+package com.github.xsi640.queryplus.core.ast;
 
-import com.github.xsi640.qinquery.core.visitor.Visitor;
+import com.github.xsi640.queryplus.core.visitor.Visitor;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

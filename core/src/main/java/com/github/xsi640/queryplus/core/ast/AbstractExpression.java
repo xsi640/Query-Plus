@@ -1,4 +1,4 @@
-package com.github.xsi640.qinquery.core.ast;
+package com.github.xsi640.queryplus.core.ast;
 
 /**
  * @author SuYang
