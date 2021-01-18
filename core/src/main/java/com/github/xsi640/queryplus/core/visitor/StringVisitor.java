@@ -1,11 +1,11 @@
 package com.github.xsi640.queryplus.core.visitor;
 
-import com.github.xsi640.qinquery.core.ast.*;
 import com.github.xsi640.queryplus.core.ast.*;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class StringVisitor<C> extends AbstractVisitor<C> {
 
-    private StringBuilder builder;
+    private final StringBuilder builder;
 
     public StringVisitor(StringBuilder builder) {
         this.builder = builder;
@@ -23,20 +23,21 @@ public class StringVisitor<C> extends AbstractVisitor<C> {
         return builder;
     }
 
+
     @Override
     public void onFunc(FuncExpression expr, C context) {
-        SymbolExpression func = expr.getFunc();
-        Expression mark = expr.getMark();
+        String fucName = expr.getFuncName();
+        builder.append(fucName).append("(");
         List<ParamExpression> params = expr.getParameters();
-        buildWithParenthesis(mark, func.priority() > mark.priority(), context);
-        if (func.getSymbol().equals(Operator.PLUS.name())) {
-            builder.append(" + ");
-        } else {
-            func.accept(this, context);
+        Iterator<ParamExpression> it = params.listIterator();
+        while (it.hasNext()) {
+            ParamExpression p = it.next();
+            p.accept(this, context);
+            if (it.hasNext()) {
+                builder.append(", ");
+            }
         }
-        for (ParamExpression param : params) {
-            buildWithParenthesis(param, func.priority() >= param.priority(), context);
-        }
+        builder.append(")");
     }
 
     @Override
@@ -63,8 +64,57 @@ public class StringVisitor<C> extends AbstractVisitor<C> {
     }
 
     @Override
-    public void onSymbol(SymbolExpression expr, C context) {
-        builder.append(expr.getSymbol());
+    public void onUnary(UnaryExpression expr, C context) {
+        UnaryOperator operator = expr.getOperator();
+        if (operator == UnaryOperator.NOT) {
+            builder.append(" NOT ");
+        }
+        ParamExpression exp = expr.getExpression();
+        buildWithParenthesis(exp, operator.getPriority() >= exp.priority(), context);
+    }
+
+    @Override
+    public void onBinary(BinaryExpression expr, C context) {
+        BinaryOperator operator = expr.getOperator();
+        ParamExpression left = expr.getLeft();
+        ParamExpression right = expr.getRight();
+        buildWithParenthesis(left, operator.getPriority() > left.priority(), context);
+        switch (operator) {
+            case PLUS:
+                builder.append(" + ");
+                break;
+            case SUB:
+                builder.append(" - ");
+                break;
+            case MUL:
+                builder.append(" * ");
+                break;
+            case DIV:
+                builder.append(" / ");
+                break;
+            case LT:
+                builder.append(" < ");
+                break;
+            case GT:
+                builder.append(" > ");
+            case LE:
+                builder.append(" <= ");
+                break;
+            case GE:
+                builder.append(" >= ");
+            case EQ:
+                builder.append(" = ");
+            case NE:
+                builder.append(" != ");
+                break;
+            case AND:
+                builder.append(" AND ");
+                break;
+            case OR:
+                builder.append(" OR ");
+                break;
+        }
+        buildWithParenthesis(right, operator.getPriority() >= right.priority(), context);
     }
 
     private void buildWithParenthesis(Expression expression, boolean hasParenthesis, C context) {

@@ -9,34 +9,19 @@ import java.util.List;
  * @author SuYang
  */
 public final class FuncExpression extends ParamExpression {
-    private final SymbolExpression func;
-    private final ParamExpression mark;
+    private final String funcName;
     private final List<ParamExpression> parameters;
 
-    public FuncExpression(SymbolExpression func, ParamExpression mark, ParamExpression... parameters) {
-        if (func == null || mark == null) {
-            throw new IllegalArgumentException("func and mark not null");
+    public FuncExpression(String funcName, ParamExpression... parameters) {
+        if (funcName == null || funcName.isEmpty() || parameters.length == 0) {
+            throw new IllegalArgumentException("func not null");
         }
-        this.func = func;
-        this.mark = mark;
+        this.funcName = funcName;
         this.parameters = Arrays.asList(parameters);
     }
 
-    public FuncExpression(SymbolExpression func, ParamExpression mark, List<ParamExpression> parameters) {
-        if (func == null || mark == null) {
-            throw new IllegalArgumentException("func and mark not null");
-        }
-        this.func = func;
-        this.mark = mark;
-        this.parameters = parameters;
-    }
-
-    public SymbolExpression getFunc() {
-        return func;
-    }
-
-    public ParamExpression getMark() {
-        return mark;
+    public String getFuncName() {
+        return funcName;
     }
 
     public List<ParamExpression> getParameters() {
@@ -50,6 +35,6 @@ public final class FuncExpression extends ParamExpression {
 
     @Override
     public int priority() {
-        return func.priority();
+        return 20;
     }
 }
