@@ -1,1 +1,1 @@
-# QinQuery
+# Query-Plus
