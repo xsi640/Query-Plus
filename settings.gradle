@@ -7,3 +7,5 @@ def defineSubProject(name, path) {
 }
 
 defineSubProject("core", "core")
+defineSubProject("mysql", "mysql")
+defineSubProject("postgres", "postgres")

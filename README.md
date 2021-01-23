@@ -2,7 +2,7 @@
 
 #### 开发计划
 - 基本ast表达式
-- 完成基本的mysql语法转换，使用spring jdbcTemplate
+- 完成基本的postgres语法转换，使用spring jdbcTemplate
 - 支持update, delete, insert语法
 - 支持锁，for update
 - 支持entity对象转换
