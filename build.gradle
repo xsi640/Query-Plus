@@ -15,6 +15,7 @@ allprojects {
     ext.prjName = "query-plus"
 
     ext.vers = [
+            lombok: '1.18.16',
     ]
 
     def user = System.properties["repoUser"]
@@ -32,5 +33,10 @@ allprojects {
     }
 
     dependencies {
+        compileOnly "org.projectlombok:lombok:$vers.lombok"
+        annotationProcessor "org.projectlombok:lombok:$vers.lombok"
+
+        testCompileOnly "org.projectlombok:lombok:$vers.lombok"
+        testAnnotationProcessor "org.projectlombok:lombok:$vers.lombok"
     }
 }

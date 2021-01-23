@@ -13,4 +13,6 @@ public interface Visitor<C> {
     void onUnary(UnaryExpression expr, C context);
 
     void onBinary(BinaryExpression expr, C context);
+
+    void onField(FieldExpression expr, C context);
 }

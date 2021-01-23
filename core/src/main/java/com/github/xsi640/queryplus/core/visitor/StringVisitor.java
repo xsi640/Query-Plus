@@ -96,6 +96,7 @@ public class StringVisitor<C> extends AbstractVisitor<C> {
                 break;
             case GT:
                 builder.append(" > ");
+                break;
             case LE:
                 builder.append(" <= ");
                 break;
@@ -114,6 +115,11 @@ public class StringVisitor<C> extends AbstractVisitor<C> {
                 break;
         }
         buildWithParenthesis(right, operator.getPriority() >= right.priority(), context);
+    }
+
+    @Override
+    public void onField(FieldExpression expr, C context) {
+        builder.append(expr.getField());
     }
 
     private void buildWithParenthesis(Expression expression, boolean hasParenthesis, C context) {

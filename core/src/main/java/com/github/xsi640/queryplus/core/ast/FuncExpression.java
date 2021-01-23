@@ -1,6 +1,7 @@
 package com.github.xsi640.queryplus.core.ast;
 
 import com.github.xsi640.queryplus.core.visitor.Visitor;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +10,9 @@ import java.util.List;
  * @author SuYang
  */
 public final class FuncExpression extends ParamExpression {
+    @Getter
     private final String funcName;
+    @Getter
     private final List<ParamExpression> parameters;
 
     public FuncExpression(String funcName, ParamExpression... parameters) {
@@ -20,14 +23,6 @@ public final class FuncExpression extends ParamExpression {
         this.parameters = Arrays.asList(parameters);
     }
 
-    public String getFuncName() {
-        return funcName;
-    }
-
-    public List<ParamExpression> getParameters() {
-        return parameters;
-    }
-
     @Override
     public <C> void accept(Visitor<C> visitor, C context) {
         visitor.onFunc(this, context);
@@ -36,5 +31,9 @@ public final class FuncExpression extends ParamExpression {
     @Override
     public int priority() {
         return 20;
+    }
+
+    public static FuncExpression of(String funcName, ParamExpression... parameters) {
+        return new FuncExpression(funcName, parameters);
     }
 }
