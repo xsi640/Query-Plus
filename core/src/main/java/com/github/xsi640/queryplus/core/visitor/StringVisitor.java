@@ -23,7 +23,6 @@ public class StringVisitor<C> extends AbstractVisitor<C> {
         return builder;
     }
 
-
     @Override
     public void onFunc(FuncExpression expr, C context) {
         String fucName = expr.getFuncName();
