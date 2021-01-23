@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author SuYang
  */
-public final class FuncExpression extends ParamExpression {
+public final class FuncExpression implements ParamExpression, LogicExpression {
     @Getter
     private final String funcName;
     @Getter

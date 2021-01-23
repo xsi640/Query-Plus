@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * @author SuYang
  */
-public final class ValueExpression extends ParamExpression {
+public final class ValueExpression implements ParamExpression {
 
     @Getter
     private final Object value;

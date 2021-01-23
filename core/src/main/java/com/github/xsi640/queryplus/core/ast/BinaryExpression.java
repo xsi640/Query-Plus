@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * @author SuYang
  */
-public class BinaryExpression extends ParamExpression {
+public class BinaryExpression implements ParamExpression, LogicExpression {
 
     @Getter
     private final BinaryOperator operator;

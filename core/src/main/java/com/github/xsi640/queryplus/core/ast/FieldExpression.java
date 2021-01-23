@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * @author SuYang
  */
-public class FieldExpression extends ParamExpression {
+public class FieldExpression implements ParamExpression {
 
     @Getter
     private final String field;

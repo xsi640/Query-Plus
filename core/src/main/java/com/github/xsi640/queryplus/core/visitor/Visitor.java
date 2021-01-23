@@ -15,4 +15,6 @@ public interface Visitor<C> {
     void onBinary(BinaryExpression expr, C context);
 
     void onField(FieldExpression expr, C context);
+
+    void onSql(SqlExpression expr, C context);
 }

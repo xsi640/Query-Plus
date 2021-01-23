@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * @author SuYang
  */
-public class UnaryExpression extends ParamExpression {
+public class UnaryExpression implements ParamExpression, LogicExpression {
 
     @Getter
     private final UnaryOperator operator;
