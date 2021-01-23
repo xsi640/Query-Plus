@@ -1,6 +1,7 @@
 package com.github.xsi640.queryplus.core.ast;
 
 import com.github.xsi640.queryplus.core.visitor.Visitor;
+import com.github.xsi640.queryplus.exception.ExpressionArgumentException;
 import lombok.Getter;
 
 /**
@@ -14,9 +15,9 @@ public class UnaryExpression extends ParamExpression {
     private final ParamExpression expression;
 
     private UnaryExpression(UnaryOperator operator, ParamExpression param) {
-        if (operator == null || param == null) {
-            throw new IllegalArgumentException("unary all args not null");
-        }
+        ExpressionArgumentException.check(operator == null, "The UnaryExpression operator can't null.");
+        ExpressionArgumentException.check(param == null, "The UnaryExpression param can't null.");
+
         this.operator = operator;
         this.expression = param;
     }

@@ -1,6 +1,7 @@
 package com.github.xsi640.queryplus.core.ast;
 
 import com.github.xsi640.queryplus.core.visitor.Visitor;
+import com.github.xsi640.queryplus.exception.ExpressionArgumentException;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -27,7 +28,7 @@ public final class ValueExpression extends ParamExpression {
                 value instanceof String) {
             this.value = value;
         } else {
-            throw new IllegalArgumentException("not support value type.");
+            throw ExpressionArgumentException.of("not support value type.");
         }
     }
 

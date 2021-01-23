@@ -1,6 +1,7 @@
 package com.github.xsi640.queryplus.core.ast;
 
 import com.github.xsi640.queryplus.core.visitor.Visitor;
+import com.github.xsi640.queryplus.exception.ExpressionArgumentException;
 import lombok.Getter;
 
 /**
@@ -12,9 +13,8 @@ public class FieldExpression extends ParamExpression {
     private final String field;
 
     public FieldExpression(String field) {
-        if (field == null || field.isEmpty()) {
-            throw new IllegalArgumentException("field not null");
-        }
+        ExpressionArgumentException.check(field == null || field.isEmpty(), "The FieldExpression field can't null");
+
         this.field = field;
     }
 

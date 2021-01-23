@@ -1,6 +1,7 @@
 package com.github.xsi640.queryplus.core.ast;
 
 import com.github.xsi640.queryplus.core.visitor.Visitor;
+import com.github.xsi640.queryplus.exception.ExpressionArgumentException;
 import lombok.Getter;
 
 /**
@@ -16,9 +17,10 @@ public class BinaryExpression extends ParamExpression {
     private final ParamExpression right;
 
     public BinaryExpression(BinaryOperator operator, ParamExpression left, ParamExpression right) {
-        if (operator == null || left == null || right == null) {
-            throw new IllegalArgumentException("binary all args not null");
-        }
+        ExpressionArgumentException.check(operator == null, "The BinaryExpression operator can't null.");
+        ExpressionArgumentException.check(left == null, "The BinaryExpression left can't null.");
+        ExpressionArgumentException.check(right == null, "The BinaryExpression right can't null.");
+
         this.operator = operator;
         this.left = left;
         this.right = right;

@@ -1,6 +1,7 @@
 package com.github.xsi640.queryplus.core.ast;
 
 import com.github.xsi640.queryplus.core.visitor.Visitor;
+import com.github.xsi640.queryplus.exception.ExpressionArgumentException;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -16,9 +17,9 @@ public final class FuncExpression extends ParamExpression {
     private final List<ParamExpression> parameters;
 
     public FuncExpression(String funcName, ParamExpression... parameters) {
-        if (funcName == null || funcName.isEmpty() || parameters.length == 0) {
-            throw new IllegalArgumentException("func not null");
-        }
+        ExpressionArgumentException.check(funcName == null || funcName.isEmpty(), "FuncExpression funcName can't null.");
+        ExpressionArgumentException.check(parameters == null || parameters.length == 0, "FuncExpression parameters can't null or empty.");
+
         this.funcName = funcName;
         this.parameters = Arrays.asList(parameters);
     }
