@@ -3,197 +3,274 @@ package com.github.xsi640.queryplus.core.ast;
 import com.github.xsi640.queryplus.core.ast.sql.*;
 import com.github.xsi640.queryplus.core.visitor.Visitor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author SuYang
  */
 public class SqlExpression implements SqlComboExpression {
 
-    private FieldExpression schema = null;
-    private FieldExpression table = null;
-    private String tableAlias = null;
+    private List<Table> tables = null;
     private List<Join> joins = null;
-    private ParamExpression where = null;
+    private LogicExpression where = null;
     private List<FieldExpression> groups = null;
     private List<Order> orders = null;
     private Limit limit = null;
     private List<Select> selects = null;
     private boolean distinct = false;
     private boolean count = false;
-
-    @Override
-    public <C> void accept(Visitor<C> visitor, C context) {
-
-    }
-
-    @Override
-    public int priority() {
-        return 0;
-    }
+    private boolean update = false;
+    private boolean forUpdate = false;
+    private Map<String, ParamExpression> updateMap = null;
+    private Map<String, ParamExpression> insertMap = null;
+    private boolean insert = false;
+    private boolean delete = false;
+    private List<String> deletes = null;
 
     @Override
     public QueryableExpression distinct() {
-        return null;
+        this.distinct = true;
+        return this;
     }
 
     @Override
     public ModifiableExpression where(LogicExpression expression) {
-        return null;
+        this.where = expression;
+        return this;
     }
 
     @Override
     public List<FieldExpression> groups() {
-        return null;
+        return this.groups;
     }
 
     @Override
     public GroupableExpression group(FieldExpression expression) {
-        return null;
+        if (this.groups == null)
+            this.groups = new ArrayList<>();
+        this.groups.add(expression);
+        return this;
     }
 
     @Override
     public List<Join> joins() {
-        return null;
+        return this.joins;
     }
 
     @Override
-    public JoinableExpression join(JoinMode mode, FieldExpression table, String alias, LogicExpression on) {
-        return null;
+    public JoinableExpression join(JoinMode mode, FieldExpression schema, FieldExpression table, String alias, LogicExpression on) {
+        if (this.joins == null)
+            this.joins = new ArrayList<>();
+        this.joins.add(Join.of(mode, schema, table, alias, on));
+        return this;
     }
 
     @Override
     public JoinableExpression leftJoin(FieldExpression table, String alias, LogicExpression on) {
-        return null;
+        return this.join(JoinMode.LEFT, null, table, alias, on);
     }
 
     @Override
     public JoinableExpression rightJoin(FieldExpression table, String alias, LogicExpression on) {
-        return null;
+        return this.join(JoinMode.RIGHT, null, table, alias, on);
     }
 
     @Override
     public JoinableExpression innerJoin(FieldExpression table, String alias, LogicExpression on) {
-        return null;
+        return this.join(JoinMode.INNER, null, table, alias, on);
     }
 
     @Override
     public JoinableExpression leftJoin(FieldExpression table, LogicExpression on) {
-        return null;
+        return this.leftJoin(table, null, on);
     }
 
     @Override
     public JoinableExpression rightJoin(FieldExpression table, LogicExpression on) {
-        return null;
+        return this.rightJoin(table, null, on);
     }
 
     @Override
     public JoinableExpression innerJoin(FieldExpression table, LogicExpression on) {
-        return null;
+        return this.innerJoin(table, null, on);
     }
 
     @Override
     public SelectableExpression limit(Limit limit) {
-        return null;
+        this.limit = limit;
+        return this;
     }
 
     @Override
     public SelectableExpression limit(ParamExpression start, ParamExpression count) {
-        return null;
+        this.limit = Limit.of(start, count);
+        return this;
     }
 
     @Override
-    public UpdatableExpression update() {
-        return null;
+    public UpdatableExpression executeUpdate() {
+        this.update = true;
+        this.delete = false;
+        this.insert = false;
+        return this;
     }
 
     @Override
-    public void delete(List<FieldExpression> fields) {
+    public InsertableExpression executeInsert() {
+        this.insert = true;
+        this.update = false;
+        this.delete = false;
+        return this;
+    }
 
+    @Override
+    public void delete(List<String> fields) {
+        this.delete = true;
+        this.insert = false;
+        this.update = false;
+        this.deletes = fields;
     }
 
     @Override
     public void delete() {
-
+        this.delete = true;
+        this.update = false;
+        this.insert = false;
     }
 
     @Override
     public List<Order> orders() {
-        return null;
+        return this.orders;
     }
 
     @Override
     public OrderableExpression order(Order order) {
-        return null;
+        if (this.orders == null)
+            this.orders = new ArrayList<>();
+        this.orders.add(order);
+        return this;
     }
 
     @Override
     public OrderableExpression order(OrderMode mode, FieldExpression expression) {
-        return null;
+        return this.order(Order.of(mode, expression));
     }
 
     @Override
     public OrderableExpression asc(FieldExpression expression) {
-        return null;
+        return this.order(OrderMode.ASC, expression);
     }
 
     @Override
     public OrderableExpression desc(FieldExpression expression) {
-        return null;
+        return this.order(OrderMode.DESC, expression);
     }
 
     @Override
     public void count() {
-
+        this.count = true;
     }
 
     @Override
     public void forUpdate() {
-
+        this.forUpdate = true;
     }
 
     @Override
     public Limit limit() {
-        return null;
+        return this.limit;
     }
 
     @Override
     public List<Select> selects() {
-        return null;
+        return this.selects;
     }
 
     @Override
     public SelectableExpression select(Select select) {
-        return null;
+        if (this.selects == null) {
+            this.selects = new ArrayList<>();
+        }
+        this.selects.add(select);
+        return this;
     }
 
     @Override
     public SelectableExpression select(ParamExpression expression) {
-        return null;
+        return this.select(Select.of(expression, null));
     }
 
     @Override
     public SelectableExpression select(ParamExpression expression, String alias) {
-        return null;
+        return this.select(Select.of(expression, alias));
     }
 
     @Override
     public void clear() {
+        this.tables = null;
+        this.joins = null;
+        this.where = null;
+        this.groups = null;
+        this.orders = null;
+        this.limit = null;
+        this.selects = null;
+        this.distinct = false;
+        this.count = false;
+        this.update = false;
+        this.forUpdate = false;
+        this.updateMap = null;
+        this.insert = false;
+        this.delete = false;
+        this.deletes = null;
+    }
 
+    @Override
+    public JoinableExpression from(String schema, FieldExpression from, String alias) {
+        if (tables == null) {
+            tables = new ArrayList<>();
+        }
+        tables.add(Table.of(schema, from, alias));
+        return this;
     }
 
     @Override
     public JoinableExpression from(FieldExpression from, String alias) {
-        return null;
+        return this.from(null, from, alias);
     }
 
     @Override
     public JoinableExpression from(FieldExpression from) {
-        return null;
+        return this.from(null, from, null);
     }
 
     @Override
-    public UpdatableExpression set(String field, ParamExpression expression) {
-        return null;
+    public UpdatableExpression update(String field, ParamExpression expression) {
+        if (this.updateMap == null) {
+            this.updateMap = new HashMap<>();
+        }
+        this.updateMap.put(field, expression);
+        return this;
+    }
+
+    @Override
+    public UpdatableExpression insert(String field, FieldExpression expression) {
+        if (this.insertMap == null) {
+            this.insertMap = new HashMap<>();
+        }
+        this.insertMap.put(field, expression);
+        return this;
+    }
+
+    @Override
+    public <C> void accept(Visitor<C> visitor, C context) {
+        visitor.onSql(this, context);
+    }
+
+    @Override
+    public int priority() {
+        return 200;
     }
 }

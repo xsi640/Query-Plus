@@ -8,6 +8,8 @@ import com.github.xsi640.queryplus.core.ast.FieldExpression;
 public interface SqlAbstractExpression {
     void clear();
 
+    JoinableExpression from(String schema, FieldExpression from, String alias);
+
     JoinableExpression from(FieldExpression from, String alias);
 
     JoinableExpression from(FieldExpression from);

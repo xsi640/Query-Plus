@@ -1,16 +1,16 @@
 package com.github.xsi640.queryplus.core.ast.sql;
 
-import com.github.xsi640.queryplus.core.ast.FieldExpression;
-
 import java.util.List;
 
 /**
  * @author SuYang
  */
 public interface ModifiableExpression extends GroupableExpression {
-    UpdatableExpression update();
+    UpdatableExpression executeUpdate();
 
-    void delete(List<FieldExpression> fields);
+    InsertableExpression executeInsert();
+
+    void delete(List<String> fields);
 
     void delete();
 }
