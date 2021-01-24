@@ -15,12 +15,16 @@ public final class FuncExpression implements ParamExpression, LogicExpression {
     private final String funcName;
     @Getter
     private final List<ParamExpression> parameters;
+    @Getter
+    private final ParamExpression mark;
 
-    public FuncExpression(String funcName, ParamExpression... parameters) {
+    public FuncExpression(String funcName, ParamExpression mark, ParamExpression... parameters) {
         ExpressionArgumentException.check(funcName == null || funcName.isEmpty(), "FuncExpression funcName can't null.");
+        ExpressionArgumentException.check(mark == null, "FuncExpression mark can't null or empty.");
         ExpressionArgumentException.check(parameters == null || parameters.length == 0, "FuncExpression parameters can't null or empty.");
 
         this.funcName = funcName;
+        this.mark = mark;
         this.parameters = Arrays.asList(parameters);
     }
 
@@ -34,7 +38,7 @@ public final class FuncExpression implements ParamExpression, LogicExpression {
         return 20;
     }
 
-    public static FuncExpression of(String funcName, ParamExpression... parameters) {
-        return new FuncExpression(funcName, parameters);
+    public static FuncExpression of(String funcName, ParamExpression mark, ParamExpression... parameters) {
+        return new FuncExpression(funcName, mark, parameters);
     }
 }

@@ -19,8 +19,12 @@ allprojects {
     ext.prjName = "query-plus"
 
     ext.vers = [
-            lombok: '1.18.16',
+            lombok    : '1.18.16',
+            commons_io: '3.11',
     ]
+
+    jar.enabled = true
+    bootJar.enabled = false
 
     def user = System.properties["repoUser"]
     def pwd = System.properties["repoPassword"]
@@ -42,5 +46,8 @@ allprojects {
 
         testCompileOnly "org.projectlombok:lombok:$vers.lombok"
         testAnnotationProcessor "org.projectlombok:lombok:$vers.lombok"
+
+        compile "org.apache.commons:commons-lang3:$vers.commons_io"
+
     }
 }

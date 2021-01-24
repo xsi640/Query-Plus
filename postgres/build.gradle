@@ -1,3 +1,4 @@
 dependencies {
     compile project(":$prjName-core")
+    compile project(":$prjName-sqlbuilder")
 }

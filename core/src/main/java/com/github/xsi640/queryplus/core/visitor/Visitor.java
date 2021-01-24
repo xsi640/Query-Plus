@@ -17,4 +17,6 @@ public interface Visitor<C> {
     void onField(FieldExpression expr, C context);
 
     void onSql(SqlExpression expr, C context);
+
+    void onSqlParameter(SqlParameterExpression expr, C context);
 }

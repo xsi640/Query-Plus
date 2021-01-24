@@ -2,12 +2,13 @@ rootProject.name = 'Query-Plus'
 ext.prjName = "query-plus"
 
 def defineSubProject(name, path) {
-    String prjName = "$prjName-$name"
+    def prjName = "$prjName-$name"
     include(prjName)
     project(":$prjName").projectDir = file(path)
 }
 
 defineSubProject("core", "core")
+defineSubProject("sql", "sql")
 defineSubProject("mysql", "mysql")
 defineSubProject("postgres", "postgres")
 defineSubProject("sqlbuilder", "sqlbuilder")
