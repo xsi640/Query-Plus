@@ -5,10 +5,8 @@ import com.github.xsi640.queryplus.core.visitor.AbstractVisitor;
 import com.github.xsi640.queryplus.exception.ExpressionArgumentException;
 import com.github.xsi640.queryplus.sql.utils.SqlVisitorUtils;
 import com.github.xsi640.queryplus.sqlbuilder.SqlTemplateBuilder;
+import lombok.Getter;
 
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,12 +14,15 @@ import java.util.List;
  */
 public class AbstractSqlVisitor<C> extends AbstractVisitor<C> {
 
-    private C context;
-    private SqlTemplateBuilder builder;
+    private final C context;
+    @Getter
+    private final SqlTemplateBuilder builder;
+    private final SqlBuilderVisitor<C> sqlBuilderVisitor;
 
     public AbstractSqlVisitor(SqlTemplateBuilder builder, C context) {
         this.builder = builder;
         this.context = context;
+        this.sqlBuilderVisitor = new AbstractSqlBuilderVisitor<>(this);
     }
 
     @Override
@@ -146,7 +147,15 @@ public class AbstractSqlVisitor<C> extends AbstractVisitor<C> {
 
     @Override
     public void onSql(SqlExpression expr, C context) {
-
+        if (expr.isDelete()) {
+            buildDelete(expr, context);
+        } else if (expr.isInsert()) {
+            buildInsert(expr, context);
+        } else if (expr.isUpdate()) {
+            buildUpdate(expr, context);
+        } else {
+            buildQuery(expr, context);
+        }
     }
 
     @Override
@@ -214,4 +223,19 @@ public class AbstractSqlVisitor<C> extends AbstractVisitor<C> {
         builder.append(")");
     }
 
+    private void buildQuery(SqlExpression expr, C context) {
+        sqlBuilderVisitor.buildQuery(expr, context);
+    }
+
+    private void buildUpdate(SqlExpression expr, C context) {
+        sqlBuilderVisitor.buildUpdate(expr, context);
+    }
+
+    private void buildInsert(SqlExpression expr, C context) {
+        sqlBuilderVisitor.buildInsert(expr, context);
+    }
+
+    private void buildDelete(SqlExpression expr, C context) {
+        sqlBuilderVisitor.buildDelete(expr, context);
+    }
 }

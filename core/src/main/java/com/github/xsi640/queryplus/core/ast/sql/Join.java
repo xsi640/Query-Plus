@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public final class Join {
     private JoinMode mode;
-    private FieldExpression schema;
+    private String schema;
     private FieldExpression table;
     private String tableAlias;
     private LogicExpression on;
 
-    public static Join of(JoinMode mode, FieldExpression schema, FieldExpression table, String alias, LogicExpression on) {
+    public static Join of(JoinMode mode, String schema, FieldExpression table, String alias, LogicExpression on) {
         Join join = new Join();
         join.setMode(mode);
         join.setSchema(schema);

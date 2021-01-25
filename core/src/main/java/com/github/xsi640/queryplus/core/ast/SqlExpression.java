@@ -2,6 +2,7 @@ package com.github.xsi640.queryplus.core.ast;
 
 import com.github.xsi640.queryplus.core.ast.sql.*;
 import com.github.xsi640.queryplus.core.visitor.Visitor;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,21 +14,37 @@ import java.util.Map;
  */
 public class SqlExpression implements SqlComboExpression {
 
+    @Getter
     private List<Table> tables = null;
+    @Getter
     private List<Join> joins = null;
+    @Getter
     private LogicExpression where = null;
+    @Getter
     private List<FieldExpression> groups = null;
+    @Getter
     private List<Order> orders = null;
+    @Getter
     private Limit limit = null;
+    @Getter
     private List<Select> selects = null;
+    @Getter
     private boolean distinct = false;
+    @Getter
     private boolean count = false;
+    @Getter
     private boolean update = false;
+    @Getter
     private boolean forUpdate = false;
+    @Getter
     private Map<String, ParamExpression> updateMap = null;
+    @Getter
     private Map<String, ParamExpression> insertMap = null;
+    @Getter
     private boolean insert = false;
+    @Getter
     private boolean delete = false;
+    @Getter
     private List<String> deletes = null;
 
     @Override
@@ -61,7 +78,7 @@ public class SqlExpression implements SqlComboExpression {
     }
 
     @Override
-    public JoinableExpression join(JoinMode mode, FieldExpression schema, FieldExpression table, String alias, LogicExpression on) {
+    public JoinableExpression join(JoinMode mode, String schema, FieldExpression table, String alias, LogicExpression on) {
         if (this.joins == null)
             this.joins = new ArrayList<>();
         this.joins.add(Join.of(mode, schema, table, alias, on));

@@ -11,7 +11,7 @@ import java.util.List;
 public interface JoinableExpression extends FilterableExpression {
     List<Join> joins();
 
-    JoinableExpression join(JoinMode mode, FieldExpression schema, FieldExpression table, String alias, LogicExpression on);
+    JoinableExpression join(JoinMode mode, String schema, FieldExpression table, String alias, LogicExpression on);
 
     JoinableExpression leftJoin(FieldExpression table, String alias, LogicExpression on);
 
